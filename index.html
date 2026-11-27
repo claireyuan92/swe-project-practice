@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="color-scheme" content="light dark"/>
+<link rel="icon" href="data:,"/>
+<title>SWE Project Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&family=Fraunces:opsz,wght@9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --surface2:#eef1f4; --text:#101828; --muted:#5b6b82; --line:#e2e6ec;
+  --accent:#0f766e; --accent-bg:#ccfbf1;
+  --c1:#0284c7; --c2:#059669; --c3:#dc2626; --c4:#be185d; --c5:#b45309;
+  --radius:18px;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0a0f1a; --surface:#121a2a; --surface2:#1a2538; --text:#e6edf7; --muted:#9aa8bd; --line:#24314a; --accent:#2dd4bf; --accent-bg:#134e4a; }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:"Public Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+a{color:inherit}
+button,[role="button"]{min-height:44px}
+.mono{font-family:"JetBrains Mono",monospace}
+.topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb, var(--bg) 88%, transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1180px;margin:0 auto;padding:10px 20px;display:flex;gap:10px;align-items:center;overflow:auto;white-space:nowrap;scrollbar-width:none}
+.topbar-inner::-webkit-scrollbar{display:none}
+.topbar a{text-decoration:none;font-size:13px;font-weight:600;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+.topbar a:first-child{background:var(--text);color:var(--bg);border-color:var(--text)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px 64px}
+.hero{padding:36px 0 8px;display:grid;grid-template-columns:1.35fr .85fr;gap:28px}
+@media(max-width:820px){.hero{grid-template-columns:1fr}}
+.hero h1{font-family:"Fraunces",serif;font-size:clamp(42px,6vw,72px);line-height:.95;letter-spacing:-.02em;margin:10px 0 14px}
+.hero h1 span{color:var(--accent)}
+.kicker{font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--accent)}
+.lead{font-size:17px;color:var(--muted);max-width:620px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
+.stat b{font-size:28px;display:block;line-height:1}
+.stat span{font-size:13px;color:var(--muted)}
+.hero-card{background:var(--text);color:var(--bg);border-radius:20px;padding:22px}
+.hero-card h3{margin:0 0 12px;font-size:15px}
+.path{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.path li{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);padding:12px;border-radius:12px}
+@media(prefers-color-scheme: light){.path li{background:#1e293b}}
+.path i{width:28px;height:28px;border-radius:50%;background:var(--accent);color:white;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:13px;flex:0 0 auto}
+.path b{font-size:14px;display:block;line-height:1.3}
+.path span{font-size:13px;opacity:.75}
+.controls{position:sticky;top:61px;z-index:15;background:var(--bg);padding:16px 0 10px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.search{flex:1;min-width:220px;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px}
+.search input{border:0;outline:0;background:transparent;width:100%;height:36px;color:var(--text);font-size:15px}
+.pills{display:flex;gap:8px;flex-wrap:wrap}
+.pill{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:0 16px;font-weight:700;font-size:14px;cursor:pointer}
+.pill.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.section-head{margin:36px 0 14px;display:flex;justify-content:space-between;align-items:end;gap:16px}
+.section-head h2{margin:0;font-size:26px;letter-spacing:-.02em}
+.section-head p{margin:0;color:var(--muted);font-size:14px}
+.course{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;margin:18px 0 28px}
+.course-top{height:6px}
+.course-body{padding:24px}
+@media(max-width:600px){.course-body{padding:18px}}
+.course-head{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
+.num{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:700;letter-spacing:.1em}
+.course h3{margin:4px 0 6px;font-size:28px;line-height:1.15;letter-spacing:-.02em}
+.sub{color:var(--muted);max-width:680px}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.tag{font-size:12px;font-weight:700;padding:6px 10px;border-radius:999px;background:var(--surface2);border:1px solid var(--line)}
+.meta{display:flex;gap:10px;flex-wrap:wrap}
+.meta div{background:var(--surface2);border-radius:12px;padding:10px 12px;min-width:110px}
+.meta b{display:block;font-size:13px}
+.meta span{font-size:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:1fr 1.15fr;gap:24px;margin-top:22px}
+@media(max-width:860px){.grid{grid-template-columns:1fr}}
+.grid h4{margin:0 0 10px;font-size:14px;letter-spacing:.06em;text-transform:uppercase}
+.milestones{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:step}
+.milestones li{display:flex;gap:12px;padding:12px;border:1px solid var(--line);border-radius:12px}
+.milestones li::before{counter-increment:step;content:counter(step);width:26px;height:26px;border-radius:50%;background:var(--text);color:var(--bg);display:grid;place-items:center;font-size:13px;font-weight:800;flex:0 0 auto;margin-top:2px}
+.milestones b{font-size:14px}
+.milestones p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.deliver{margin-top:16px;background:var(--accent-bg);border-radius:12px;padding:14px}
+.deliver b{font-size:14px}
+.deliver p{margin:4px 0 0;font-size:13px;opacity:.9}
+.res-list{display:grid;gap:10px}
+.res{display:flex;gap:12px;text-decoration:none;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--surface)}
+.res:hover{border-color:var(--accent)}
+.res-icon{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;font-size:18px;flex:0 0 auto;background:#fee2e2;color:#991b1b}
+.res-icon.doc{background:#dbeafe;color:#1e40af}
+.res-icon.repo{background:#111827;color:#fff}
+.res-icon.web{background:#fef3c7;color:#92400e}
+.res b{font-size:14px;line-height:1.35;display:block}
+.res p{margin:3px 0 0;font-size:13px;color:var(--muted);line-height:1.5}
+.res small{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.caveat{margin-top:12px;font-size:13px;color:var(--muted);background:var(--surface2);border-radius:10px;padding:10px 12px}
+.repo{background:#0f172a;color:#e2e8f0;border-radius:20px;padding:26px;margin-top:36px;overflow:hidden}
+.repo h2{margin:0 0 8px;color:white}
+.repo p{color:#94a3b8}
+.tree{background:#020617;border:1px solid #1e293b;border-radius:14px;padding:18px;overflow:auto;font-size:13px;line-height:1.7}
+.tree span{color:#38bdf8}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:760px){.two{grid-template-columns:1fr}}
+.checklist{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:8px}
+.checklist li{padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);font-size:14px}
+.footer{margin-top:28px;color:var(--muted);font-size:13px;line-height:1.7}
+.hidden{display:none !important}
+.progress-bar{height:8px;background:var(--surface2);border-radius:999px;overflow:hidden;margin-top:14px}
+.progress-bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.done-btn{margin-top:12px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:0 16px;font-weight:700;cursor:pointer}
+.done-btn.done{background:var(--accent);color:white;border-color:var(--accent)}
+</style>
+</head>
+<body>
+<nav class="topbar"><div class="topbar-inner">
+<a href="#top">SWE Project Practice</a><a href="#c1">01 Twitter Backend</a><a href="#c2">02 Self-Driving</a><a href="#c3">03 Flash Sale</a><a href="#c4">04 NLP Filter</a><a href="#c5">05 Blockchain</a><a href="#repo">Repository</a>
+</div></nav>
+
+<div class="wrap" id="top">
+<header class="hero">
+<div>
+<div class="kicker">Project-Based Learning · 5 Projects</div>
+<h1>Build your way to<br/>real <span>system skills</span></h1>
+<p class="lead">Not a problem-set checklist — five complete projects you can put on a résumé, run end to end, and explain the trade-offs of. From high-concurrency backends to perception and planning, flash-sale oversell protection to on-chain apps. Every course pairs link-checked YouTube videos with docs and open-source repos (the few channel names or runtimes that couldn't be confirmed are flagged inside each course), plus a ready-to-init monorepo blueprint.</p>
+<div class="stats">
+<div class="stat"><b>5</b><span>Complete projects</span></div>
+<div class="stat"><b>23</b><span>YouTube videos</span></div>
+<div class="stat"><b>17</b><span>Docs / articles / repos</span></div>
+</div>
+<div class="progress-bar"><i id="bar"></i></div>
+<p style="font-size:13px;color:var(--muted)" id="progressText">Progress on this page lasts only while it's open — use each course's “Mark complete” button to pace yourself.</p>
+</div>
+<aside class="hero-card">
+<h3>Recommended order · by dependency and difficulty</h3>
+<ul class="path">
+<li><i>1</i><div><b>Twitter Backend · Python</b><span>Data models, caching, and fan-out first — every later distributed project builds on it</span></div></li>
+<li><i>2</i><div><b>Flash Sale · Spring</b><span>Push caching and concurrency to the limit: Lua, locks, queues, rate limiting</span></div></li>
+<li><i>3</i><div><b>NLP Sensitive-Word Detection</b><span>The most algorithm-dense course: Aho-Corasick + BERT, done in about a week</span></div></li>
+<li><i>4</i><div><b>Self-Driving</b><span>Perception → planning → control, verified in a closed loop inside CARLA</span></div></li>
+<li><i>5</i><div><b>Blockchain</b><span>From hashing and consensus fundamentals to Solidity contracts and a DApp</span></div></li>
+</ul>
+</aside>
+</header>
+
+<div class="controls">
+<label class="search">⌕ <input id="q" type="search" placeholder="Search resources: Redis / CARLA / Aho-Corasick / Solidity…" aria-label="Search resources"/></label>
+<div class="pills" id="pills">
+<button class="pill active" data-f="all">All</button>
+<button class="pill" data-f="video">Videos only</button>
+<button class="pill" data-f="doc">Docs &amp; repos</button>
+<button class="pill" data-f="zh">Chinese resources</button>
+</div>
+</div>
+
+<!-- COURSE 1 -->
+<article class="course" id="c1" data-course>
+<div class="course-top" style="background:var(--c1)"></div>
+<div class="course-body">
+<div class="course-head"><div><div class="num" style="color:var(--c1)">PROJECT 01 — BACKEND / SYSTEM DESIGN</div><h3>Twitter Backend System · Python</h3><p class="sub">Rebuild the core of a small Twitter: posting, following, and the home timeline. The point isn't the UI — it's the fan-out strategy: when a celebrity posts, how does the system survive the write amplification?</p><div class="tags"><span class="tag">Python</span><span class="tag">FastAPI / Django</span><span class="tag">PostgreSQL</span><span class="tag">Redis</span><span class="tag">Fan-out</span></div></div>
+<div class="meta"><div><b>Difficulty</b><span>★★★☆☆ Intermediate</span></div><div><b>Timeframe</b><span>2–3 weeks</span></div><div><b>Resources</b><span>5 videos + 3 docs</span></div></div></div>
+<div class="grid">
+<div>
+<h4>Milestones</h4>
+<ol class="milestones">
+<li><div><b>Data model &amp; core APIs</b><p>Model users, tweets, and follows; FastAPI + SQLAlchemy CRUD, JWT auth, pagination.</p></div></li>
+<li><div><b>Timeline &amp; fan-out</b><p>Implement both fan-out on write and fan-out on read; load-test and compare latency vs. write cost.</p></div></li>
+<li><div><b>The celebrity problem &amp; hybrid strategy</b><p>Route by follower-count threshold: push for regular users, pull for celebrities; cache timelines in Redis (cap 800 entries).</p></div></li>
+<li><div><b>Reliability hardening</b><p>Outbox pattern, cursor pagination, hot-key handling; add tests and deployment notes.</p></div></li>
+</ol>
+<div class="deliver"><b>Final deliverable</b><p>A runnable Twitter-clone backend + architecture diagram + a fan-out trade-off write-up. Repo folder: <span class="mono">01-twitter-backend/</span></p></div>
+<button class="done-btn" data-done>Mark this course complete</button>
+</div>
+<div>
+<h4>YouTube · Watch in order</h4>
+<div class="res-list">
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=7VF3tmwPLUM" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · ~15 min · EN</small><b>Design Twitter: Home Timeline, Fan-out &amp; the Celebrity Problem</b><p>A hands-on small-Twitter take: Python + PostgreSQL + Redis, write fan-out and hybrid merging.</p></div></a>
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=M1Xv-sxBG1E" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · The Hot Path · ~25 min · EN</small><b>Design the News Feed (Twitter / X) — System Design Interview</b><p>Derives the fan-out choice from read/write ratios; covers hot celebrity keys, cursor pagination, and the outbox.</p></div></a>
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=KXunlJgeRcU" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · Codemy.com · ~14 min · EN</small><b>Let's Build Twitter With Django and Python — #1</b><p>Opening episode of a hands-on Django series building a Twitter clone (Musker) from scratch, including follows and posting.</p></div></a>
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=iukOehU5aF4" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · Corey Schafer · ~14h24m · EN</small><b>Python FastAPI Tutorial: Full Course for Beginners</b><p>The foundation course for this project: SQLAlchemy / Pydantic, async, JWT, PostgreSQL / Alembic, testing and deployment. Don't watch it all — pick chapters per milestone.</p></div></a>
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=xUd3sSbkqWY" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · Real-Run · ~8 min · EN</small><b>Design the Twitter Timeline: Fan-out, the Celebrity Problem, and Search</b><p>Short and sharp: push/pull trade-offs, celebrity write storms, hybrid routing by follower count, with a live Python stdlib demo.</p></div></a>
+</div>
+<h4 style="margin-top:18px">Docs &amp; articles</h4>
+<div class="res-list">
+<a class="res" data-type="doc" data-lang="en" href="https://redis.io/docs/latest/develop/clients/patterns/twitter-clone/" target="_blank" rel="noopener"><div class="res-icon doc">◈</div><div><small>Docs · Redis official · EN</small><b>Redis Patterns — Building a Twitter Clone (Retwis)</b><p>The official tutorial on designing the follow graph and timelines with Lists, Sets, Hashes, and Sorted Sets.</p></div></a>
+<a class="res" data-type="doc" data-lang="en" href="https://www.systemdecoder.com/guide/hld/twitter-system-design" target="_blank" rel="noopener"><div class="res-icon web">◎</div><div><small>Article · EN</small><b>Design Twitter: Feed Fanout and Timeline Guide</b><p>An interactive comparison of three fan-out strategies, including Redis timeline caching (LPUSH / LTRIM).</p></div></a>
+<a class="res" data-type="doc" data-lang="zh" href="http://opendeep.wiki/karanpratapsingh/system-design/interviews-case-studies.twitter" target="_blank" rel="noopener"><div class="res-icon web">◎</div><div><small>Article · Chinese walkthrough</small><b>Case Study: The Twitter Social Network — system-design, in Chinese</b><p>A full Chinese walkthrough: requirements, capacity estimation, APIs, data model, message queues, and the caching layer.</p></div></a>
+</div>
+<div class="caveat">Note: the channel name for video 1 couldn't be confirmed from the page. The Chinese walkthrough is a wiki mirror of karanpratapsingh/system-design.</div>
+</div>
+</div>
+</div>
+</article>
+
+<!-- COURSE 2 -->
+<article class="course" id="c2" data-course>
+<div class="course-top" style="background:var(--c2)"></div>
+<div class="course-body">
+<div class="course-head"><div><div class="num" style="color:var(--c2)">PROJECT 02 — PERCEPTION / SIMULATION</div><h3>Self-Driving Car Project</h3><p class="sub">No real car needed: run a complete pipeline inside the CARLA simulator — camera frames → lane and object detection → decisions and speed control. Build intuition with pure OpenCV first, then move to deep learning and reinforcement learning.</p><div class="tags"><span class="tag">Python</span><span class="tag">CARLA</span><span class="tag">OpenCV</span><span class="tag">TensorFlow / YOLO</span><span class="tag">Apollo</span></div></div>
+<div class="meta"><div><b>Difficulty</b><span>★★★★☆ Advanced</span></div><div><b>Timeframe</b><span>3–4 weeks</span></div><div><b>Resources</b><span>5 videos + 5 docs</span></div></div></div>
+<div class="grid">
+<div>
+<h4>Milestones</h4>
+<ol class="milestones">
+<li><div><b>Lane detection (pure OpenCV)</b><p>Canny edges, ROI masking, Hough lines — draw lanes on driving video in real time.</p></div></li>
+<li><div><b>CARLA basics</b><p>Install the simulator and drive the Python API: spawn vehicles, attach cameras and sensors, replay data.</p></div></li>
+<li><div><b>Perception fusion</b><p>Object detection (vehicles / pedestrians / cyclists) + traffic-light recognition + lane keeping, following a YOLO + UFLD approach.</p></div></li>
+<li><div><b>Planning &amp; control</b><p>Adaptive speed control and simple motion planning; go further with MIT's deep RL work in DeepTraffic.</p></div></li>
+</ol>
+<div class="deliver"><b>Final deliverable</b><p>A self-driving demo video in CARLA + the perception pipeline code. Repo folder: <span class="mono">02-autonomous-driving/</span> · Hardware note: CARLA is GPU-hungry — without a discrete GPU, finish the pure-CPU version of milestone 1 first.</p></div>
+<button class="done-btn" data-done>Mark this course complete</button>
+</div>
+<div>
+<h4>YouTube · Watch in order</h4>
+<div class="res-list">
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=CvJN_jSVm30" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · EN · Beginner</small><b>OpenCV Lane Detection Tutorial — Intro to Self Driving Cars</b><p>A line-by-line walkthrough of pure-OpenCV lane detection — the ideal first lesson.</p></div></a>
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=sYhZbhT-Smw" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · Analytics Vidhya · EN</small><b>Lane Detection for Self Driving Cars (Real-Time, OpenCV)</b><p>Masking, thresholding, and the Hough transform on real driving footage — no deep learning required.</p></div></a>
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=m1vctOrYrTY" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · ~53 min · EN</small><b>Autonomous Self Driving Car Part 3 | CARLA Simulator</b><p>TensorFlow object detection + OpenCV lane detection inside CARLA, including TF Object Detection API setup.</p></div></a>
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=MQ6pP65o7OM" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · Lex Fridman / MIT 6.S094 · ~55 min · EN</small><b>MIT 6.S094: Deep Reinforcement Learning</b><p>The AI pipeline from sensors to actions, reinforcement learning, and the DeepTraffic motion-planning simulation.</p></div></a>
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=QDzM8r3WgBw" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · Lex Fridman / MIT · ~1 hr · EN</small><b>MIT 6.S094: Deep RL for Motion Planning</b><p>How Q-learning and deep reinforcement learning apply to motion planning. Optional, advanced.</p></div></a>
+</div>
+<h4 style="margin-top:18px">Docs, courses &amp; repos</h4>
+<div class="res-list">
+<a class="res" data-type="doc" data-lang="en" href="https://carla-ue5.readthedocs.io/en/latest/" target="_blank" rel="noopener"><div class="res-icon doc">◈</div><div><small>Docs · CARLA official · EN</small><b>CARLA Simulator — Official Documentation</b><p>Quick start, Python API, and sensor / map references — keep it open while you develop.</p></div></a>
+<a class="res" data-type="doc" data-lang="en" href="https://github.com/PreritSM/Carla_Autonomous_Driving" target="_blank" rel="noopener"><div class="res-icon repo">⬢</div><div><small>GitHub · EN</small><b>PreritSM / Carla_Autonomous_Driving</b><p>A complete CARLA 0.9.15 system: YOLO11n detection, UFLD lanes, traffic-light recognition, adaptive speed control, training notebooks, and a demo video.</p></div></a>
+<a class="res" data-type="doc" data-lang="en" href="https://www.classcentral.com/course/udacity-self-driving-car-fundamentals-featuring-apollo-11639" target="_blank" rel="noopener"><div class="res-icon web">◎</div><div><small>Course · Udacity × Baidu · Free · EN</small><b>Self-Driving Car Fundamentals: Featuring Apollo</b><p>Taught by Sebastian Thrun: HD maps, localization, perception, prediction, planning, and control — the full stack at a glance.</p></div></a>
+<a class="res" data-type="doc" data-lang="zh" href="https://www.bilibili.com/video/BV1Mv421C7QN/" target="_blank" rel="noopener"><div class="res-icon web">◎</div><div><small>Bilibili · 12 lessons · Chinese</small><b>2024 Bilibili Self-Driving Course Series</b><p>From hands-on perception, visual localization, and HD maps to path planning, control theory, and RL-based driving.</p></div></a>
+<a class="res" data-type="doc" data-lang="zh" href="https://cloud.tencent.com/developer/article/2249254?policyId=1004" target="_blank" rel="noopener"><div class="res-icon web">◎</div><div><small>Article · Tencent Cloud Developer Community · Chinese</small><b>Self-Driving Resource Collection: Videos, Books &amp; Open-Source Projects</b><p>A roundup of courses and open-source projects: Apollo / Udacity, University of Toronto on Coursera, DeepBlue Academy SLAM, and more.</p></div></a>
+</div>
+<div class="caveat">Note: no high-quality Chinese YouTube video dedicated to CARLA / Apollo turned up, so the Bilibili series is the best Chinese-language substitute. Channel names for videos 1 and 5 couldn't be confirmed.</div>
+</div>
+</div>
+</div>
+</article>
+
+<!-- COURSE 3 -->
+<article class="course" id="c3" data-course>
+<div class="course-top" style="background:var(--c3)"></div>
+<div class="course-body">
+<div class="course-head"><div><div class="num" style="color:var(--c3)">PROJECT 03 — HIGH CONCURRENCY / JAVA</div><h3>E-Commerce Flash Sale System · Spring</h3><p class="sub">A flash sale is a concurrency problem at heart: 100,000 people chasing 100 units. How do you avoid overselling, stay up, and stay fair? From pre-deducting stock in Redis to async ordering, every layer exists to keep pressure away from the database.</p><div class="tags"><span class="tag">Java 21</span><span class="tag">Spring Boot 3</span><span class="tag">Redis / Redisson</span><span class="tag">Lua</span><span class="tag">Kafka / RabbitMQ</span><span class="tag">MySQL</span></div></div>
+<div class="meta"><div><b>Difficulty</b><span>★★★★☆ Advanced</span></div><div><b>Timeframe</b><span>3 weeks</span></div><div><b>Resources</b><span>5 videos + 3 docs</span></div></div></div>
+<div class="grid">
+<div>
+<h4>Milestones</h4>
+<ol class="milestones">
+<li><div><b>Basic store &amp; Redis integration</b><p>Model products, orders, and inventory; wire Redis into Spring Boot for caching and sessions.</p></div></li>
+<li><div><b>Oversell protection core</b><p>Warm inventory into Redis, atomic Lua deductions + one-order-per-user checks, Redisson distributed locks as a backstop.</p></div></li>
+<li><div><b>Async ordering &amp; peak shaving</b><p>Eligibility first, confirmation later: a message queue absorbs orders, the outbox guarantees consistency, Saga handles cross-service transactions.</p></div></li>
+<li><div><b>Rate limiting, circuit breaking &amp; load testing</b><p>Token-bucket limiting at the gateway, Resilience4j circuit breakers, Bloom filters against cache penetration; load-test to high QPS and analyze the bottlenecks.</p></div></li>
+</ol>
+<div class="deliver"><b>Final deliverable</b><p>A flash-sale system that starts with one Docker Compose command + a load-test report (QPS / oversell verification). Repo folder: <span class="mono">03-seckill-spring/</span></p></div>
+<button class="done-btn" data-done>Mark this course complete</button>
+</div>
+<div>
+<h4>YouTube · Watch in order</h4>
+<div class="res-list">
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=2srQ-RiJHps" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · Engineering Digest · EN</small><b>How to Use Redis in Your Spring Boot Project</b><p>Lay the groundwork first: Redis integration, caching, and sessions in Spring Boot — every flash-sale technique later builds on this.</p></div></a>
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=G4QiwJztW7c" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · ~1 hr · EN</small><b>Shopping Website System Design Masterclass — Spring Boot Production Architecture</b><p>A production architecture for 10k req/s normally and 100k during flash sales; the inventory chapter covers atomic reservations and the Redis sale gate, plus Saga / Outbox / idempotency.</p></div></a>
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=hMMHBuDtPrM" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · The Dip Developer · ~21 min · EN</small><b>Top 10 Scenario-Based Spring Boot Microservices Questions</b><p>Question 06 is exactly the flash-sale scenario: Spring Cloud Gateway + a Redis token bucket against a 1000 rps flood.</p></div></a>
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=MV5Kdwzwcag" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · InfoQ · ~52 min · EN</small><b>Shopify's Architecture to Handle the World's Biggest Flash Sales</b><p>A real-world case: Shopify's Black Friday architecture — queuing, Nginx + Lua page caching, and failure prevention (QCon talk).</p></div></a>
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=eHTt7Qrqq3g" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · The Machine Room · ~19 min · EN</small><b>How Shopify Survives Black Friday: 489 Million Requests a Minute</b><p>Rebuilds Shopify's flood defenses step by step: sharding, pods, edge leaky-bucket limiting, and fair queueing pages.</p></div></a>
+</div>
+<h4 style="margin-top:18px">Articles &amp; open-source implementations</h4>
+<div class="res-list">
+<a class="res" data-type="doc" data-lang="zh" href="https://blog.csdn.net/qq_36021478/article/details/156054363" target="_blank" rel="noopener"><div class="res-icon web">◎</div><div><small>Article · CSDN · Chinese · Full code included</small><b>Flash Sale System in Practice: Spring Boot + Redis + RabbitMQ (CSDN)</b><p>The full flow on Spring Boot 2.7 + Redisson + RabbitMQ + MySQL 8: oversell protection, one order per user, Lua rate limiting.</p></div></a>
+<a class="res" data-type="doc" data-lang="en" href="https://www.besthub.dev/articles/how-to-build-a-100k-qps-seckill-system-with-spring-boot-redis-and-lua-917ccb6ae58a" target="_blank" rel="noopener"><div class="res-icon web">◎</div><div><small>Article · BestHub · EN</small><b>How to Build a 100k QPS Seckill System with Spring Boot, Redis, and Lua</b><p>The complete design: eligibility-first + async confirmation, atomic Lua deductions, Kafka / RocketMQ async ordering, warm-up and fault tolerance.</p></div></a>
+<a class="res" data-type="doc" data-lang="en" href="https://github.com/kazama1996/high-concurrency-seckill-system/blob/HEAD/CLAUDE.md" target="_blank" rel="noopener"><div class="res-icon repo">⬢</div><div><small>GitHub · EN</small><b>kazama1996 / high-concurrency-seckill-system</b><p>A production-grade Spring Boot 3.5 / Java 21 implementation: Redisson, Lua, Kafka, PostgreSQL, circuit breaking, and outbox, with Docker Compose. Best read side by side with your own code.</p></div></a>
+</div>
+<div class="caveat">Note: no dedicated Chinese YouTube tutorial on Spring Boot flash sales could be verified, so the CSDN article is the Chinese hands-on reference. A Bilibili Redis flash-sale series (BV1x2421M731) exists inside a collection, but its standalone link wasn't verified, so it isn't listed.</div>
+</div>
+</div>
+</div>
+</article>
+
+<!-- COURSE 4 -->
+<article class="course" id="c4" data-course>
+<div class="course-top" style="background:var(--c4)"></div>
+<div class="course-body">
+<div class="course-head"><div><div class="num" style="color:var(--c4)">PROJECT 04 — NLP / ALGORITHMS</div><h3>NLP Sensitive-Word Detection</h3><p class="sub">The first line of defense in content moderation. A comment has to be scanned against tens of thousands of sensitive words in milliseconds — not with a regex loop, but with an Aho-Corasick automaton: one pass, many patterns. Then BERT adds semantic-level toxicity classification on top.</p><div class="tags"><span class="tag">Python</span><span class="tag">Aho-Corasick</span><span class="tag">Trie / DFA</span><span class="tag">BERT</span><span class="tag">Hugging Face</span></div></div>
+<div class="meta"><div><b>Difficulty</b><span>★★☆☆☆ Beginner+</span></div><div><b>Timeframe</b><span>1–2 weeks</span></div><div><b>Resources</b><span>3 videos + 3 docs</span></div></div></div>
+<div class="grid">
+<div>
+<h4>Milestones</h4>
+<ol class="milestones">
+<li><div><b>Wordlist &amp; baseline</b><p>Assemble a sensitive-word list, write a naive Trie / DFA version, and measure baseline performance.</p></div></li>
+<li><div><b>Aho-Corasick automaton</b><p>Build the Trie + failure links for single-pass multi-pattern matching; handle variants — simplified/traditional characters, full/half width, pinyin.</p></div></li>
+<li><div><b>Turn it into a service</b><p>Wrap it in a real-time detection API: match positions, masking/redaction, and severity tiers (block / human review / allow).</p></div></li>
+<li><div><b>Model backup (advanced)</b><p>Fine-tune BERT for multi-label toxicity classification to catch evasive phrasing the wordlist misses; compare where each approach breaks down.</p></div></li>
+</ol>
+<div class="deliver"><b>Final deliverable</b><p>A sensitive-word detection service + a performance report (wordlist size vs. latency). Repo folder: <span class="mono">04-nlp-sensitive-words/</span></p></div>
+<button class="done-btn" data-done>Mark this course complete</button>
+</div>
+<div>
+<h4>YouTube · Watch in order</h4>
+<div class="res-list">
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=O7_w001f58c" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · Niema Moshiri · ~10 min · EN</small><b>Advanced Data Structures: Aho-Corasick Automaton</b><p>Ten minutes that make it click: Trie construction, failure links, and single-pass multi-pattern search — this course's core algorithm.</p></div></a>
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=xkGkWmthlF0" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · CodeChef · EN</small><b>Lecture on Aho-Corasick Algorithm and Applications — Sergey Kulik</b><p>The deep version: real applications of large-scale multi-pattern matching. Watch once the basics are clear.</p></div></a>
+<a class="res" data-type="video" data-lang="ru" href="https://www.youtube.com/watch?v=-IepoOSQGC8" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · ~1h45m · Russian · Optional</small><b>The Aho-Corasick Algorithm — Kirill Krishtal</b><p>A rigorous lecture motivated by exactly our use case — filtering profanity in chat messages — with the most on-point examples. Russian is the barrier; skip it if the language doesn't work for you.</p></div></a>
+</div>
+<h4 style="margin-top:18px">Tutorials, components &amp; model approaches</h4>
+<div class="res-list">
+<a class="res" data-type="doc" data-lang="zh" href="https://tlylft.github.io/NLP/sensitive_word/sensitivewords/" target="_blank" rel="noopener"><div class="res-icon web">◎</div><div><small>Article · Chinese · Python code included</small><b>Sensitive-Word Detection 01 – Task Introduction</b><p>A panoramic tutorial: DFA / Trie, Aho-Corasick, where Chinese wordlists come from, and AI-based approaches.</p></div></a>
+<a class="res" data-type="doc" data-lang="zh" href="https://github.com/toolgood/ToolGood.Words" target="_blank" rel="noopener"><div class="res-icon repo">⬢</div><div><small>GitHub · Chinese docs · C# / Python</small><b>ToolGood.Words — High-Performance Sensitive-Word Filter</b><p>A production-grade reference implementation: AC algorithm + simplified/traditional conversion, full/half width, pinyin, and fuzzy search — the standard reference for real-time Chinese moderation.</p></div></a>
+<a class="res" data-type="doc" data-lang="en" href="https://www.geeksforgeeks.org/machine-learning/toxic-comment-classification-using-bert/" target="_blank" rel="noopener"><div class="res-icon web">◎</div><div><small>Article · GeeksforGeeks · EN</small><b>Toxic Comment Classification using BERT</b><p>Fine-tune BERT with PyTorch + Transformers for multi-label toxicity classification — the model-based complement to the wordlist approach.</p></div></a>
+</div>
+<div class="caveat">Note: only 3 YouTube videos could be verified for this course, and one of them is in Russian. The often-recommended “Ctrl+F on steroids – Aho-Corasick” was left out because its exact link couldn't be verified.</div>
+</div>
+</div>
+</div>
+</article>
+
+<!-- COURSE 5 -->
+<article class="course" id="c5" data-course>
+<div class="course-top" style="background:var(--c5)"></div>
+<div class="course-body">
+<div class="course-head"><div><div class="num" style="color:var(--c5)">PROJECT 05 — BLOCKCHAIN / WEB3</div><h3>Blockchain: From Principles to Applications</h3><p class="sub">First compute hashes by hand, mine a block, and tamper with a chain to watch the network reject it — once the principles are solid, write Solidity contracts, issue an ERC-20, and build a DApp you can actually interact with.</p><div class="tags"><span class="tag">SHA-256 / PoW</span><span class="tag">Solidity</span><span class="tag">Ethereum / EVM</span><span class="tag">ERC-20 / NFT</span><span class="tag">Python</span></div></div>
+<div class="meta"><div><b>Difficulty</b><span>★★★☆☆ Intermediate</span></div><div><b>Timeframe</b><span>2–3 weeks</span></div><div><b>Resources</b><span>5 videos + 3 docs</span></div></div></div>
+<div class="grid">
+<div>
+<h4>Milestones</h4>
+<ol class="milestones">
+<li><div><b>Principles: hashes, blocks &amp; chains</b><p>Use the interactive demo to mine and tamper hands-on; understand why hash chains and proof of work resist tampering.</p></div></li>
+<li><div><b>How Bitcoin actually works</b><p>Ledgers, digital signatures, the double-spend problem; go further by actually mining and transferring on a regtest network.</p></div></li>
+<li><div><b>Build a chain from scratch</b><p>Implement a minimal blockchain in Python (blocks, transactions, mining, node consensus), using the blockchain-demo source as reference.</p></div></li>
+<li><div><b>Applications: smart contracts &amp; DApps</b><p>Solidity basics, ERC-20 / NFT, DeFi concepts, and full-stack DApp development (work through the 16-hour course by chapter).</p></div></li>
+</ol>
+<div class="deliver"><b>Final deliverable</b><p>Your own mini-blockchain + a contract deployed to a testnet. Repo folder: <span class="mono">05-blockchain/</span></p></div>
+<button class="done-btn" data-done>Mark this course complete</button>
+</div>
+<div>
+<h4>YouTube · Watch in order</h4>
+<div class="res-list">
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=SSo_EIwHSd4" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · Simply Explained · ~6 min · EN</small><b>How Does a Blockchain Work — Simply Explained</b><p>The best opener: blocks, hashes, hash chains, proof of work, and distributed consensus.</p></div></a>
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=_160oMzblY8" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · Anders Brownworth · ~18 min · EN</small><b>Blockchain 101 — A Visual Demo</b><p>Watch alongside the interactive demo below: hashing, mining, chaining, tokens.</p></div></a>
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=bBC-nXj3Ng4" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · 3Blue1Brown · ~25 min · EN</small><b>But How Does Bitcoin Actually Work?</b><p>Bitcoin rebuilt from first principles: ledgers, signatures, hashing, and double-spending — the clearest version, told with math animation.</p></div></a>
+<a class="res" data-type="video" data-lang="zh" href="https://www.youtube.com/watch?v=5hgdekVZb3A" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · Chinese · Beginner-friendly</small><b>Bitcoin for Absolute Beginners: Mining, Hands-On</b><p>A Chinese-language walkthrough of how the Bitcoin network runs, with a hands-on regtest-network mining and transaction demo.</p></div></a>
+<a class="res" data-type="video" data-lang="en" href="https://www.youtube.com/watch?v=M576WGiDBdQ" target="_blank" rel="noopener"><div class="res-icon">▶</div><div><small>YouTube · freeCodeCamp / Patrick Collins · ~16 hr · EN</small><b>Solidity, Blockchain, and Smart Contract Course</b><p>The main course for the applications half: Solidity, smart contracts, ERC-20 / NFT, DeFi, and full-stack DApps — study it in sections aligned with milestone 4.</p></div></a>
+</div>
+<h4 style="margin-top:18px">Docs, demos &amp; source code</h4>
+<div class="res-list">
+<a class="res" data-type="doc" data-lang="en" href="https://andersbrownworth.com/blockchain/" target="_blank" rel="noopener"><div class="res-icon web">◎</div><div><small>Interactive Demo · EN</small><b>Blockchain Demo (Anders Brownworth)</b><p>Hash, mine, and tamper with a chain right in the browser, and watch distributed nodes reject invalid blocks.</p></div></a>
+<a class="res" data-type="doc" data-lang="en" href="https://ethereum.org/developers/docs/intro-to-ethereum/" target="_blank" rel="noopener"><div class="res-icon doc">◈</div><div><small>Docs · Ethereum official · EN</small><b>Intro to Ethereum — Ethereum Developer Documentation</b><p>The official technical intro: blockchains, the EVM, gas, and smart contracts, linking onward to accounts, transactions, and consensus docs.</p></div></a>
+<a class="res" data-type="doc" data-lang="en" href="https://github.com/anders94/blockchain-demo" target="_blank" rel="noopener"><div class="res-icon repo">⬢</div><div><small>GitHub · EN</small><b>anders94 / blockchain-demo</b><p>The open-source code behind the interactive demo above — the best reference when building your own mini-chain.</p></div></a>
+</div>
+<div class="caveat">Note: the channel name and runtime for video 4 couldn't be confirmed from the search results.</div>
+</div>
+</div>
+</div>
+</article>
+
+<!-- REPO -->
+<section class="repo" id="repo">
+<div class="two">
+<div>
+<h2>Repository</h2>
+<p>All five courses share one monorepo — one folder per course, each independently runnable, with shared study notes and progress at the root. The live repository is on GitHub: <a href="https://github.com/claireyuan92/swe-project-practice" target="_blank" rel="noopener" style="color:#7dd3fc;text-decoration:underline;text-underline-offset:3px"><span class="mono">claireyuan92/swe-project-practice</span></a> — clone it and build each course in its own folder using the structure below.</p>
+<ul class="checklist">
+<li><b>Live repo:</b> <a href="https://github.com/claireyuan92/swe-project-practice" target="_blank" rel="noopener" style="color:#7dd3fc;text-decoration:underline;text-underline-offset:3px"><span class="mono">github.com/claireyuan92/swe-project-practice</span></a> (public)</li>
+<li><b>One folder per course</b>, each with its own README (goals, how to run, architecture diagram, retrospective)</li>
+<li><b>Root README</b> as the course index, linking back to the five courses on this page</li>
+<li><b>notes/</b> for each course's trade-off retrospective — the most valuable part at interview time</li>
+</ul>
+</div>
+<div class="tree mono">
+<span>swe-project-practice/</span><br/>
+├── README.md <span style="color:#64748b"># Course index &amp; progress</span><br/>
+├── 01-twitter-backend/ <span style="color:#64748b"># FastAPI + PG + Redis</span><br/>
+│&nbsp;&nbsp; ├── app/ · tests/ · docker-compose.yml<br/>
+├── 02-autonomous-driving/ <span style="color:#64748b"># OpenCV + CARLA</span><br/>
+│&nbsp;&nbsp; ├── lane_detection/ · carla_demo/ · notebooks/<br/>
+├── 03-seckill-spring/ <span style="color:#64748b"># Spring Boot 3 + Redis + Kafka</span><br/>
+│&nbsp;&nbsp; ├── src/ · lua/ · docker-compose.yml<br/>
+├── 04-nlp-sensitive-words/ <span style="color:#64748b"># AC automaton + BERT</span><br/>
+│&nbsp;&nbsp; ├── aho_corasick/ · bert_model/ · wordlists/<br/>
+├── 05-blockchain/ <span style="color:#64748b"># Mini chain + Solidity</span><br/>
+│&nbsp;&nbsp; ├── mini_chain/ · contracts/ · dapp/<br/>
+└── notes/ <span style="color:#64748b"># Per-course retrospectives &amp; trade-offs</span>
+</div>
+</div>
+</section>
+
+<p class="footer">About these resources: all 40 links on this page (23 YouTube videos, 17 docs / articles / open-source repos) were individually checked before the page was built. For a few entries, the channel name or runtime couldn't be confirmed — those are flagged in the notes inside each course — and entries whose links couldn't be verified were excluded rather than listed. The long videos (14-hour FastAPI, 16-hour Solidity) are foundation courses: pick chapters per milestone instead of watching them in one sitting. Study advice: finish one course before starting the next, and treat each retrospective note as more valuable than the code itself.</p>
+</div>
+
+<script>
+var q=document.getElementById('q');
+var pills=document.querySelectorAll('.pill');
+var filter='all';
+function apply(){
+  var term=(q.value||'').trim().toLowerCase();
+  document.querySelectorAll('.res').forEach(function(el){
+    var okType = filter==='all' || (filter==='video' && el.dataset.type==='video') || (filter==='doc' && el.dataset.type==='doc') || (filter==='zh' && el.dataset.lang==='zh');
+    var okTerm = !term || el.textContent.toLowerCase().indexOf(term)>-1;
+    el.classList.toggle('hidden', !(okType && okTerm));
+  });
+  document.querySelectorAll('[data-course]').forEach(function(c){
+    var any=false;
+    c.querySelectorAll('.res').forEach(function(r){ if(!r.classList.contains('hidden')) any=true; });
+    c.classList.toggle('hidden', !any && (term || filter!=='all'));
+  });
+}
+q.addEventListener('input', apply);
+pills.forEach(function(p){ p.addEventListener('click', function(){ pills.forEach(function(x){x.classList.remove('active')}); p.classList.add('active'); filter=p.dataset.f; apply(); }); });
+
+var total=5, done=0;
+function updateBar(){
+  document.getElementById('bar').style.width=(done/total*100)+'%';
+  document.getElementById('progressText').textContent = done===0 ? 'Progress on this page lasts only while it\u2019s open \u2014 use each course\u2019s \u201CMark complete\u201D button to pace yourself.' : ('Marked complete: '+done+' / 5 courses (this session only).');
+}
+document.querySelectorAll('[data-done]').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var on=btn.classList.toggle('done');
+    btn.textContent = on ? '\u2713 Completed (click to undo)' : 'Mark this course complete';
+    done += on ? 1 : -1;
+    updateBar();
+  });
+});
+</script>
+</body>
+</html>
